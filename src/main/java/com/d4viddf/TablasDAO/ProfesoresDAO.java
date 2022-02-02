@@ -47,12 +47,12 @@ public class ProfesoresDAO implements Dao<Profesores> {
             s.setInt(1, id);
             ResultSet rs = s.executeQuery();
             rs.next();
-            al.setCod_prof(rs.getInt(1));
-            al.setDNI(rs.getString(2));
-            al.setNombre(rs.getString(3));
-            al.setApellidos(rs.getString(4));
-            al.setFecha_nacimiento(LocalDate.parse(rs.getString(5)));
-            al.setDepartamento(rs.getInt(6));
+            al.setCod_prof(rs.getInt("cod_prof"));
+            al.setDNI(rs.getString("dni"));
+            al.setNombre(rs.getString("nombre"));
+            al.setApellidos(rs.getString("apellidos"));
+            al.setFecha_nacimiento(LocalDate.parse(rs.getString("fecha_nacimiento")));
+            al.setDepartamento(rs.getInt("departamentos"));
         } catch (SQLException e) {
             errores.muestraErrorSQL(e);
         }

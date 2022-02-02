@@ -12,6 +12,8 @@ import com.d4viddf.TablasDAO.ViewImpartenDAO;
 
 public abstract class DAOFactory {
     public static final int MYSQL = 1;
+    public static final int PostgreSQL = 2;
+
     public abstract Connection getConnection() throws Exception;
     public abstract AlumnosDAO getAlumnosDAO();
     public abstract AsignaturasDAO getAsignaturasDAO();
@@ -25,6 +27,8 @@ public abstract class DAOFactory {
         switch (whichFactory) {
         case MYSQL:
             return new MySQLDAOFactory();
+        case PostgreSQL:
+            return new PostgreSQLFactory();
         default:
             return null;
         }

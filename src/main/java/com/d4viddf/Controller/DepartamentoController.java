@@ -111,9 +111,12 @@ public class DepartamentoController extends DBViewController implements Initiali
     private void mostrar() {
         List<Departamentos> als = new ArrayList<>();
         try {
-            als = mySQLDAOFactory.getDepartamentosDAO().getAll(mySQLDAOFactory.getConnection());
+            als = postgreSQLFactory.getDepartamentosDAO().getAll(postgreSQLFactory.getConnection());
         } catch (SQLException e) {
             errores.muestraErrorSQL(e);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         tabDepartamentos.getItems().setAll(als);
     }
@@ -127,9 +130,12 @@ public class DepartamentoController extends DBViewController implements Initiali
         Departamentos departamentos = new Departamentos();
 
         try {
-            departamentos = mySQLDAOFactory.getDepartamentosDAO().get(mySQLDAOFactory.getConnection(), id);
+            departamentos = postgreSQLFactory.getDepartamentosDAO().get(postgreSQLFactory.getConnection(), id);
         } catch (SQLException e) {
             errores.mostrar("Por favor,\nAñade el Número del departamento para poder buscar");
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         tabDepartamentos.getItems().setAll(departamentos);
 
@@ -143,7 +149,7 @@ public class DepartamentoController extends DBViewController implements Initiali
         int id = Integer.parseInt(txtBusqueda.getText());
         List<Departamentos> als = new ArrayList<>();
         try {
-            als = mySQLDAOFactory.getDepartamentosDAO().getByPresupuesto(mySQLDAOFactory.getConnection(), id);
+            als = postgreSQLFactory.getDepartamentosDAO().getByPresupuesto(postgreSQLFactory.getConnection(), id);
         } catch (SQLException e) {
             errores.muestraErrorSQL(e);
         } catch (Exception e) {
@@ -160,7 +166,7 @@ public class DepartamentoController extends DBViewController implements Initiali
     private void findByName() {
         List<Departamentos> dep = new ArrayList<>();
         try {
-            dep = mySQLDAOFactory.getDepartamentosDAO().getByName(mySQLDAOFactory.getConnection(),
+            dep = postgreSQLFactory.getDepartamentosDAO().getByName(postgreSQLFactory.getConnection(),
                     txtBusqueda.getText().toString());
         } catch (SQLException e) {
             errores.muestraErrorSQL(e);
@@ -176,7 +182,7 @@ public class DepartamentoController extends DBViewController implements Initiali
     private void findByProfesor() {
         List<Departamentos> dep = new ArrayList<>();
         try {
-            dep = mySQLDAOFactory.getDepartamentosDAO().getByProfesor(mySQLDAOFactory.getConnection(),
+            dep = postgreSQLFactory.getDepartamentosDAO().getByProfesor(postgreSQLFactory.getConnection(),
                     txtBusqueda.getText().toString());
         } catch (SQLException e) {
             errores.muestraErrorSQL(e);
@@ -199,7 +205,7 @@ public class DepartamentoController extends DBViewController implements Initiali
         } else
             try {
                 DepartamentosDAO alm = new DepartamentosDAO();
-                alm.insertar(mySQLDAOFactory.getConnection(), Integer.parseInt(txtID.getText().toString()),
+                alm.insertar(postgreSQLFactory.getConnection(), Integer.parseInt(txtID.getText().toString()),
                         txtNombre.getText().toString(), Integer.parseInt(txtPresupuesto.getText().toString()),
                         txtDesc.getText().toString());
             } catch (Exception e) {
@@ -232,19 +238,25 @@ public class DepartamentoController extends DBViewController implements Initiali
         if (path.getText().isEmpty()) {
             guardar();
             try {
-                mySQLDAOFactory.getDepartamentosDAO().exportar(mySQLDAOFactory.getConnection(),
+                postgreSQLFactory.getDepartamentosDAO().exportar(postgreSQLFactory.getConnection(),
                         path.getText().toString());
                 estado.setText("Se ha exportado correctamente.");
             } catch (SQLException e) {
                 errores.muestraErrorSQL(e);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         } else {
             try {
-                mySQLDAOFactory.getDepartamentosDAO().exportar(mySQLDAOFactory.getConnection(),
+                postgreSQLFactory.getDepartamentosDAO().exportar(postgreSQLFactory.getConnection(),
                         path.getText().toString());
                 estado.setText("Se ha exportado correctamente.");
             } catch (SQLException e) {
                 errores.muestraErrorSQL(e);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
 
         }
@@ -274,7 +286,7 @@ public class DepartamentoController extends DBViewController implements Initiali
         if (path.getText().isEmpty()) {
             abrir(ae);
             try {
-                mySQLDAOFactory.getDepartamentosDAO().insertarLote(mySQLDAOFactory.getConnection(),
+                postgreSQLFactory.getDepartamentosDAO().insertarLote(postgreSQLFactory.getConnection(),
                         path.getText().toString());
                 estado.setText("Se han importado correctamente los datos.");
             } catch (SQLException se) {
@@ -284,7 +296,7 @@ public class DepartamentoController extends DBViewController implements Initiali
             }
         } else {
             try {
-                mySQLDAOFactory.getDepartamentosDAO().insertarLote(mySQLDAOFactory.getConnection(),
+                postgreSQLFactory.getDepartamentosDAO().insertarLote(postgreSQLFactory.getConnection(),
                         path.getText().toString());
                 estado.setText("Se han importado correctamente los datos.");
             } catch (SQLException se) {

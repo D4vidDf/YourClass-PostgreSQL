@@ -57,7 +57,7 @@ public class AsignaturaController extends DBViewController implements Initializa
         colNombre.setCellValueFactory(new PropertyValueFactory<Asignaturas, String>("nombre"));
         colCurso.setCellValueFactory(new PropertyValueFactory<Asignaturas, String>("curso"));
 
-        cbxBuscarPor.getItems().setAll("Número de asignatura", "Nombre", "Curso","Todos");
+        cbxBuscarPor.getItems().setAll("Número de asignatura", "Nombre", "Curso", "Todos");
         cbxBuscarPor.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> selected, String oldI, String newI) {
@@ -77,23 +77,23 @@ public class AsignaturaController extends DBViewController implements Initializa
             mostrar();
         } else if (selectedItem.equals("Todos") && txtBusqueda.getText().isEmpty()) {
             mostrar();
-        }else if (txtBusqueda.getText().isEmpty()) {
+        } else if (txtBusqueda.getText().isEmpty()) {
             errores.mostrar("Por favor,\nIntroduce un valor para realizar la búsqueda");
         } else {
             if (selectedItem != null) {
                 switch (selectedItem) {
-                case "Número de asignatura":
-                    findByID();
-                    break;
-                case "Nombre":
-                    findByRowLike(AsignaturasDAO.ROW_NOMBRE);
-                    break;
-                case "Curso":
-                    findByRowLike(AsignaturasDAO.ROW_CURSO);
-                    break;
-                case "Todos":
-                    mostrar();
-                    break;
+                    case "Número de asignatura":
+                        findByID();
+                        break;
+                    case "Nombre":
+                        findByRowLike(AsignaturasDAO.ROW_NOMBRE);
+                        break;
+                    case "Curso":
+                        findByRowLike(AsignaturasDAO.ROW_CURSO);
+                        break;
+                    case "Todos":
+                        mostrar();
+                        break;
                 }
             } else
                 mostrar();
@@ -106,9 +106,12 @@ public class AsignaturaController extends DBViewController implements Initializa
     private void mostrar() {
         List<Asignaturas> asg = new ArrayList<>();
         try {
-            asg = mySQLDAOFactory.getAsignaturasDAO().getAll(mySQLDAOFactory.getConnection());
+            asg = postgreSQLFactory.getAsignaturasDAO().getAll(postgreSQLFactory.getConnection());
         } catch (SQLException e) {
             errores.muestraErrorSQL(e);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         tabAlumnos.getItems().setAll(asg);
     }
@@ -121,9 +124,12 @@ public class AsignaturaController extends DBViewController implements Initializa
         int id = Integer.parseInt(txtBusqueda.getText());
         Asignaturas asg = new Asignaturas();
         try {
-            asg = mySQLDAOFactory.getAsignaturasDAO().get(mySQLDAOFactory.getConnection(), id);
+            asg = postgreSQLFactory.getAsignaturasDAO().get(postgreSQLFactory.getConnection(), id);
         } catch (SQLException e) {
             errores.mostrar("Por favor,\nAñade el Número de expediente para poder buscar");
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         tabAlumnos.getItems().setAll(asg);
     }
@@ -136,15 +142,16 @@ public class AsignaturaController extends DBViewController implements Initializa
     private void findByRowLike(String row) {
         List<Asignaturas> asg = new ArrayList<>();
         try {
-            asg = mySQLDAOFactory.getAsignaturasDAO().getByRowLike(mySQLDAOFactory.getConnection(), row,
+            asg = postgreSQLFactory.getAsignaturasDAO().getByRowLike(postgreSQLFactory.getConnection(), row,
                     txtBusqueda.getText());
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         tabAlumnos.getItems().setAll(asg);
     }
-
-
 
     /**
      * Método para crear un alumno
@@ -155,7 +162,8 @@ public class AsignaturaController extends DBViewController implements Initializa
     private void crear(ActionEvent ae) {
         try {
             AsignaturasDAO asg = new AsignaturasDAO();
-            asg.insertar(mySQLDAOFactory.getConnection(),Integer.parseInt(txtNum.getText().toString()), txtNombre.getText().toString(), txtCurso.getText().toString());
+            asg.insertar(postgreSQLFactory.getConnection(), Integer.parseInt(txtNum.getText().toString()),
+                    txtNombre.getText().toString(), txtCurso.getText().toString());
         } catch (Exception e) {
             errores.muestraError(e);
         }
@@ -186,17 +194,25 @@ public class AsignaturaController extends DBViewController implements Initializa
         if (path.getText().isEmpty()) {
             guardar();
             try {
-                mySQLDAOFactory.getAsignaturasDAO().exportar(mySQLDAOFactory.getConnection(), path.getText().toString());
+                postgreSQLFactory.getAsignaturasDAO().exportar(postgreSQLFactory.getConnection(),
+                        path.getText().toString());
                 estado.setText("Se ha exportado correctamente.");
             } catch (SQLException e) {
                 errores.muestraErrorSQL(e);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         } else {
             try {
-                mySQLDAOFactory.getAsignaturasDAO().exportar(mySQLDAOFactory.getConnection(), path.getText().toString());
+                postgreSQLFactory.getAsignaturasDAO().exportar(postgreSQLFactory.getConnection(),
+                        path.getText().toString());
                 estado.setText("Se ha exportado correctamente.");
             } catch (SQLException e) {
                 errores.muestraErrorSQL(e);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
 
         }
@@ -226,7 +242,7 @@ public class AsignaturaController extends DBViewController implements Initializa
         if (path.getText().isEmpty()) {
             abrir(ae);
             try {
-                mySQLDAOFactory.getAsignaturasDAO().insertarLote(mySQLDAOFactory.getConnection(),
+                postgreSQLFactory.getAsignaturasDAO().insertarLote(postgreSQLFactory.getConnection(),
                         path.getText().toString());
                 estado.setText("Se han importado correctamente los datos.");
             } catch (SQLException se) {
@@ -236,7 +252,7 @@ public class AsignaturaController extends DBViewController implements Initializa
             }
         } else {
             try {
-                mySQLDAOFactory.getAsignaturasDAO().insertarLote(mySQLDAOFactory.getConnection(),
+                postgreSQLFactory.getAsignaturasDAO().insertarLote(postgreSQLFactory.getConnection(),
                         path.getText().toString());
                 estado.setText("Se han importado correctamente los datos.");
             } catch (SQLException se) {

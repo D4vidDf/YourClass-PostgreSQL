@@ -68,7 +68,7 @@ public class ProfesorController extends DBViewController implements Initializabl
         colDNI.setCellValueFactory(new PropertyValueFactory<Profesores, String>("DNI"));
         colNombre.setCellValueFactory(new PropertyValueFactory<Profesores, String>("nombre"));
         colApellidos.setCellValueFactory(new PropertyValueFactory<Profesores, String>("apellidos"));
-        colNac.setCellValueFactory(new PropertyValueFactory<Profesores, LocalDate>("nacimiento"));
+        colNac.setCellValueFactory(new PropertyValueFactory<Profesores, LocalDate>("fecha_nacimiento"));
         colDepar.setCellValueFactory(new PropertyValueFactory<Profesores, Integer>("departamento"));
 
         cbxBuscarPor.getItems().setAll("Código de profesor", "DNI", "Nombre", "Apellidos", "Año de nacimiento",
@@ -129,9 +129,12 @@ public class ProfesorController extends DBViewController implements Initializabl
         int id = Integer.parseInt(txtBusqueda.getText());
         Profesores als = new Profesores();
         try {
-            als = mySQLDAOFactory.getProfesoresDAO().get(mySQLDAOFactory.getConnection(), id);
+            als = postgreSQLFactory.getProfesoresDAO().get(postgreSQLFactory.getConnection(), id);
         } catch (SQLException e) {
             errores.mostrar("Por favor,\nAñade el Código del profesor para poder buscar");
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         tabAlumnos.getItems().setAll(als);
     }
@@ -142,9 +145,12 @@ public class ProfesorController extends DBViewController implements Initializabl
     private void mostrar() {
         List<Profesores> pro = new ArrayList<>();
         try {
-            pro = mySQLDAOFactory.getProfesoresDAO().getAll(mySQLDAOFactory.getConnection());
+            pro = postgreSQLFactory.getProfesoresDAO().getAll(postgreSQLFactory.getConnection());
         } catch (SQLException e) {
             errores.muestraErrorSQL(e);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         tabAlumnos.getItems().setAll(pro);
     }
@@ -155,8 +161,11 @@ public class ProfesorController extends DBViewController implements Initializabl
     private void findByDNI() {
         Profesores pro = new Profesores();
         try {
-            pro = mySQLDAOFactory.getProfesoresDAO().getByDNI(mySQLDAOFactory.getConnection(), txtBusqueda.getText());
+            pro = postgreSQLFactory.getProfesoresDAO().getByDNI(postgreSQLFactory.getConnection(), txtBusqueda.getText());
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         tabAlumnos.getItems().setAll(pro);
@@ -171,9 +180,12 @@ public class ProfesorController extends DBViewController implements Initializabl
     private void findByRowLike(String row) {
         
           List<Profesores> als = new ArrayList<>(); try { als =
-          mySQLDAOFactory.getProfesoresDAO().getByRowLike(mySQLDAOFactory.getConnection(),
+          postgreSQLFactory.getProfesoresDAO().getByRowLike(postgreSQLFactory.getConnection(),
           row, txtBusqueda.getText()); } catch (SQLException e) { e.printStackTrace();
-          } tabAlumnos.getItems().setAll(als);
+          } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } tabAlumnos.getItems().setAll(als);
     }
 
     /**
@@ -181,8 +193,11 @@ public class ProfesorController extends DBViewController implements Initializabl
      */
     private void findByAnho() {
         List<Profesores> als = new ArrayList<>(); try { als =
-         mySQLDAOFactory.getProfesoresDAO().getByYear(mySQLDAOFactory.getConnection(),
-          txtBusqueda.getText()); } catch (SQLException e) { e.printStackTrace(); }
+         postgreSQLFactory.getProfesoresDAO().getByYear(postgreSQLFactory.getConnection(),
+          txtBusqueda.getText()); } catch (SQLException e) { e.printStackTrace(); } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
           tabAlumnos.getItems().setAll(als);
          
     }
@@ -197,7 +212,7 @@ public class ProfesorController extends DBViewController implements Initializabl
 
         try {
             ProfesoresDAO alm = new ProfesoresDAO();
-            alm.insertar(mySQLDAOFactory.getConnection(), txtNombre.getText().toString(),
+            alm.insertar(postgreSQLFactory.getConnection(), txtNombre.getText().toString(),
                     txtApellidos.getText().toString(), txtDNI.getText().toString(),
                     Integer.parseInt(txtNum.getText().toString()), fecha.getValue(), txtDep.getText().toString());
         } catch (Exception e) {
@@ -231,17 +246,23 @@ public class ProfesorController extends DBViewController implements Initializabl
         if (path.getText().isEmpty()) {
             guardar();
             try {
-                mySQLDAOFactory.getProfesoresDAO().exportar(mySQLDAOFactory.getConnection(), path.getText().toString());
+                postgreSQLFactory.getProfesoresDAO().exportar(postgreSQLFactory.getConnection(), path.getText().toString());
                 estado.setText("Se ha exportado correctamente.");
             } catch (SQLException e) {
                 errores.muestraErrorSQL(e);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         } else {
             try {
-                mySQLDAOFactory.getProfesoresDAO().exportar(mySQLDAOFactory.getConnection(), path.getText().toString());
+                postgreSQLFactory.getProfesoresDAO().exportar(postgreSQLFactory.getConnection(), path.getText().toString());
                 estado.setText("Se ha exportado correctamente.");
             } catch (SQLException e) {
                 errores.muestraErrorSQL(e);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
 
         }
@@ -271,7 +292,7 @@ public class ProfesorController extends DBViewController implements Initializabl
         if (path.getText().isEmpty()) {
             abrir(ae);
             try {
-                mySQLDAOFactory.getProfesoresDAO().insertarLote(mySQLDAOFactory.getConnection(),
+                postgreSQLFactory.getProfesoresDAO().insertarLote(postgreSQLFactory.getConnection(),
                         path.getText().toString());
                 estado.setText("Se han importado correctamente los datos.");
             } catch (SQLException se) {
@@ -281,7 +302,7 @@ public class ProfesorController extends DBViewController implements Initializabl
             }
         } else {
             try {
-                mySQLDAOFactory.getProfesoresDAO().insertarLote(mySQLDAOFactory.getConnection(),
+                postgreSQLFactory.getProfesoresDAO().insertarLote(postgreSQLFactory.getConnection(),
                         path.getText().toString());
                 estado.setText("Se han importado correctamente los datos.");
             } catch (SQLException se) {

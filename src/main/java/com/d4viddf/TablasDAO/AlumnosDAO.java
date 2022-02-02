@@ -45,11 +45,11 @@ public class AlumnosDAO implements Dao<Alumnos> {
             lista = new ArrayList<Alumnos>(totalRows);
             while (rs.next()) {
                 Alumnos emp = new Alumnos();
-                emp.setExpediente(rs.getInt(1));
-                emp.setDNI(rs.getString(2));
-                emp.setNombre(rs.getString(3));
-                emp.setApellidos(rs.getString(4));
-                emp.setNacimiento(LocalDate.parse(rs.getString(5)));
+                emp.setExpediente(rs.getInt("expediente"));
+                emp.setDNI(rs.getString("dni"));
+                emp.setNombre(rs.getString("nombre"));
+                emp.setApellidos(rs.getString("apellidos"));
+                emp.setNacimiento(LocalDate.parse(rs.getString("fecha_nacimiento")));
                 lista.add(emp);
             }
         } catch (SQLException e) {

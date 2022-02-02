@@ -125,9 +125,13 @@ public class AlumnosController extends DBViewController implements Initializable
     private void mostrar() {
         List<Alumnos> als = new ArrayList<>();
         try {
-            als = mySQLDAOFactory.getAlumnosDAO().getAll(mySQLDAOFactory.getConnection());
+            als = postgreSQLFactory.getAlumnosDAO().getAll(postgreSQLFactory.getConnection());
         } catch (SQLException e) {
             errores.muestraErrorSQL(e);
+            e.printStackTrace();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         tabAlumnos.getItems().setAll(als);
     }
@@ -140,9 +144,12 @@ public class AlumnosController extends DBViewController implements Initializable
         int id = Integer.parseInt(txtBusqueda.getText());
         Alumnos als = new Alumnos();
         try {
-            als = mySQLDAOFactory.getAlumnosDAO().get(mySQLDAOFactory.getConnection(), id);
+            als = postgreSQLFactory.getAlumnosDAO().get(postgreSQLFactory.getConnection(), id);
         } catch (SQLException e) {
             errores.mostrar("Por favor,\nAñade el Número de expediente para poder buscar");
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         tabAlumnos.getItems().setAll(als);
     }
@@ -153,9 +160,12 @@ public class AlumnosController extends DBViewController implements Initializable
     private void findByDNI() {
         List<Alumnos> als = new ArrayList<>();
         try {
-            als = mySQLDAOFactory.getAlumnosDAO().getByDNI(mySQLDAOFactory.getConnection(), txtBusqueda.getText());
+            als = postgreSQLFactory.getAlumnosDAO().getByDNI(postgreSQLFactory.getConnection(), txtBusqueda.getText());
         } catch (SQLException e) {
             errores.muestraErrorSQL(e);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         tabAlumnos.getItems().setAll(als);
     }
@@ -168,10 +178,13 @@ public class AlumnosController extends DBViewController implements Initializable
     private void findByRowLike(String row) {
         List<Alumnos> als = new ArrayList<>();
         try {
-            als = mySQLDAOFactory.getAlumnosDAO().getByRowLike(mySQLDAOFactory.getConnection(), row,
+            als = postgreSQLFactory.getAlumnosDAO().getByRowLike(postgreSQLFactory.getConnection(), row,
                     txtBusqueda.getText());
         } catch (SQLException e) {
             errores.muestraErrorSQL(e);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         tabAlumnos.getItems().setAll(als);
     }
@@ -182,9 +195,12 @@ public class AlumnosController extends DBViewController implements Initializable
     private void findByAnho() {
         List<Alumnos> als = new ArrayList<>();
         try {
-            als = mySQLDAOFactory.getAlumnosDAO().getByYear(mySQLDAOFactory.getConnection(), txtBusqueda.getText());
+            als = postgreSQLFactory.getAlumnosDAO().getByYear(postgreSQLFactory.getConnection(), txtBusqueda.getText());
         } catch (SQLException e) {
             errores.muestraErrorSQL(e);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         tabAlumnos.getItems().setAll(als);
     }
@@ -196,9 +212,12 @@ public class AlumnosController extends DBViewController implements Initializable
     private void findByProfesor() {
         List<Alumnos> als = new ArrayList<>();
         try {
-            als = mySQLDAOFactory.getAlumnosDAO().getByProfesor(mySQLDAOFactory.getConnection(), txtBusqueda.getText());
+            als = postgreSQLFactory.getAlumnosDAO().getByProfesor(postgreSQLFactory.getConnection(), txtBusqueda.getText());
         } catch (SQLException e) {
             errores.muestraErrorSQL(e);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         tabAlumnos.getItems().setAll(als);
     }
@@ -217,7 +236,7 @@ public class AlumnosController extends DBViewController implements Initializable
         } else
             try {
                 AlumnosDAO alm = new AlumnosDAO();
-                alm.insertar(mySQLDAOFactory.getConnection(), txtNombre.getText().toString(),
+                alm.insertar(postgreSQLFactory.getConnection(), txtNombre.getText().toString(),
                         txtApellidos.getText().toString(), txtDNI.getText().toString(),
                         Integer.parseInt(txtNum.getText().toString()), fecha.getValue());
             } catch (Exception e) {
@@ -250,14 +269,17 @@ public class AlumnosController extends DBViewController implements Initializable
         if (path.getText().isEmpty()) {
             guardar();
             try {
-                mySQLDAOFactory.getAlumnosDAO().exportar(mySQLDAOFactory.getConnection(), path.getText().toString());
+                postgreSQLFactory.getAlumnosDAO().exportar(postgreSQLFactory.getConnection(), path.getText().toString());
                 estado.setText("Se ha exportado correctamente.");
             } catch (SQLException e) {
                 errores.muestraErrorSQL(e);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         } else {
             try {
-                mySQLDAOFactory.getAlumnosDAO().exportar(mySQLDAOFactory.getConnection(), path.getText().toString());
+                postgreSQLFactory.getAlumnosDAO().exportar(postgreSQLFactory.getConnection(), path.getText().toString());
                 estado.setText("Se ha exportado correctamente.");
             } catch (SQLException e) {
                 errores.muestraErrorSQL(e);
@@ -290,7 +312,7 @@ public class AlumnosController extends DBViewController implements Initializable
         if (path.getText().isEmpty()) {
             abrir(ae);
             try {
-                mySQLDAOFactory.getAlumnosDAO().insertarLote(mySQLDAOFactory.getConnection(),
+                postgreSQLFactory.getAlumnosDAO().insertarLote(postgreSQLFactory.getConnection(),
                         path.getText().toString());
                 estado.setText("Se han importado correctamente los datos.");
             } catch (SQLException se) {
@@ -300,7 +322,7 @@ public class AlumnosController extends DBViewController implements Initializable
             }
         } else {
             try {
-                mySQLDAOFactory.getAlumnosDAO().insertarLote(mySQLDAOFactory.getConnection(),
+                postgreSQLFactory.getAlumnosDAO().insertarLote(postgreSQLFactory.getConnection(),
                         path.getText().toString());
                 estado.setText("Se han importado correctamente los datos.");
             } catch (SQLException se) {

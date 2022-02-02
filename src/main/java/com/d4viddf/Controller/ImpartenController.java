@@ -156,9 +156,12 @@ public class ImpartenController extends DBViewController implements Initializabl
     private void mostrar() {
         List<ViewImparten> als = new ArrayList<>();
         try {
-            als = mySQLDAOFactory.getViewImpartenDAO().getAll(mySQLDAOFactory.getConnection());
+            als = postgreSQLFactory.getViewImpartenDAO().getAll(postgreSQLFactory.getConnection());
         } catch (SQLException e) {
             errores.muestraErrorSQL(e);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         tabAlumnos.getItems().setAll(als);
     }
@@ -172,9 +175,12 @@ public class ImpartenController extends DBViewController implements Initializabl
 
         List<ViewImparten> als = new ArrayList<>();
         try {
-            als = mySQLDAOFactory.getViewImpartenDAO().getByRowLike(mySQLDAOFactory.getConnection(), row,
+            als = postgreSQLFactory.getViewImpartenDAO().getByRowLike(postgreSQLFactory.getConnection(), row,
                     txtBusqueda.getText());
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         tabAlumnos.getItems().setAll(als);
@@ -183,9 +189,12 @@ public class ImpartenController extends DBViewController implements Initializabl
 
         List<ViewImparten> als = new ArrayList<>();
         try {
-            als = mySQLDAOFactory.getViewImpartenDAO().getByRowLikeINT(mySQLDAOFactory.getConnection(), row,
+            als = postgreSQLFactory.getViewImpartenDAO().getByRowLikeINT(postgreSQLFactory.getConnection(), row,
                     txtBusqueda.getText());
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         tabAlumnos.getItems().setAll(als);
@@ -200,7 +209,7 @@ public class ImpartenController extends DBViewController implements Initializabl
     private void crear(ActionEvent ae) {
         try {
             ImpartenDAO im = new ImpartenDAO();
-            im.insertar(mySQLDAOFactory.getConnection(), txtCurso.getText().toString(),
+            im.insertar(postgreSQLFactory.getConnection(), txtCurso.getText().toString(),
                     Integer.parseInt(txtExp.getText().toString()), Integer.parseInt(txtAsig.getText().toString()),
                     Integer.parseInt(txtProfesor.getText().toString()));
         } catch (Exception e) {
@@ -233,17 +242,23 @@ public class ImpartenController extends DBViewController implements Initializabl
         if (path.getText().isEmpty()) {
             guardar();
             try {
-                mySQLDAOFactory.getImpartenDAO().exportar(mySQLDAOFactory.getConnection(), path.getText().toString());
+                postgreSQLFactory.getImpartenDAO().exportar(postgreSQLFactory.getConnection(), path.getText().toString());
                 estado.setText("Se ha exportado correctamente.");
             } catch (SQLException e) {
                 errores.muestraErrorSQL(e);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         } else {
             try {
-                mySQLDAOFactory.getImpartenDAO().exportar(mySQLDAOFactory.getConnection(), path.getText().toString());
+                postgreSQLFactory.getImpartenDAO().exportar(postgreSQLFactory.getConnection(), path.getText().toString());
                 estado.setText("Se ha exportado correctamente.");
             } catch (SQLException e) {
                 errores.muestraErrorSQL(e);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
 
         }
@@ -273,7 +288,7 @@ public class ImpartenController extends DBViewController implements Initializabl
         if (path.getText().isEmpty()) {
             abrir(ae);
             try {
-                mySQLDAOFactory.getImpartenDAO().insertarLote(mySQLDAOFactory.getConnection(),
+                postgreSQLFactory.getImpartenDAO().insertarLote(postgreSQLFactory.getConnection(),
                         path.getText().toString());
                 estado.setText("Se han importado correctamente los datos.");
             } catch (SQLException se) {
@@ -283,7 +298,7 @@ public class ImpartenController extends DBViewController implements Initializabl
             }
         } else {
             try {
-                mySQLDAOFactory.getImpartenDAO().insertarLote(mySQLDAOFactory.getConnection(),
+                postgreSQLFactory.getImpartenDAO().insertarLote(postgreSQLFactory.getConnection(),
                         path.getText().toString());
                 estado.setText("Se han importado correctamente los datos.");
             } catch (SQLException se) {

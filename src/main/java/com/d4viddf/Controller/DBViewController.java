@@ -1,9 +1,10 @@
 package com.d4viddf.Controller;
 
 import com.d4viddf.Factory.MySQLDAOFactory;
+import com.d4viddf.Factory.PostgreSQLFactory;
 
 public class DBViewController {
 
-    protected MySQLDAOFactory mySQLDAOFactory = new MySQLDAOFactory();
+    protected PostgreSQLFactory postgreSQLFactory = new PostgreSQLFactory();
     
 }

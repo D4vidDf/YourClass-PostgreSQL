@@ -37,7 +37,7 @@ public class ModificadorController extends DBViewController implements Initializ
         try {
             progress.setProgress(0.1);
             progress.setProgress(0.5);
-            Crear.createTables(mySQLDAOFactory.getConnection());
+            Crear.createTables(postgreSQLFactory.getConnection());
             prompt.appendText("Tablas creadas correctamente\n");
             progress.setProgress(1);
         } catch (Exception e) {
@@ -60,7 +60,7 @@ public class ModificadorController extends DBViewController implements Initializ
         try {
             progress.setProgress(0.1);
             progress.setProgress(0.5);
-            Borrar.borr(mySQLDAOFactory.getConnection());
+            Borrar.borr(postgreSQLFactory.getConnection());
             prompt.appendText("Tablas vaciadas correctamente\n");
             progress.setProgress(1);
         } catch (Exception e) {
